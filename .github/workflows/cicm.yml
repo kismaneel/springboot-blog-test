@@ -1,5 +1,5 @@
 # ① 워크플로의 이름 지정
-name: CI
+name: CI/CD
 
 # ② 워크플로가 시작될 조건 지정
 on:
@@ -8,7 +8,8 @@ on:
 
 jobs:
   build:
-    runs-on: ubunto-latest  # ③ 실행 환경 지정
+    # ③ 실행 환경 지정
+    runs-on: ubuntu-latest
     # ④ 실행 스텝 지정
     steps:
       - uses: actions/checkout@v3
