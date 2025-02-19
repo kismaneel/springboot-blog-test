@@ -1,0 +1,7 @@
+spring:
+  sql:
+    init:
+      mode: never
+jwt:
+  issuer: kismaneel@gmail.com
+  secret_key: survivor-developer-springboot
