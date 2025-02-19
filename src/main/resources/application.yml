@@ -26,4 +26,4 @@ spring:
               - profile
 jwt:
   issuer: kismaneel@gmail.com
-  secret_key: study-springboot
+  secret_key: ${JWT_SECRET_KEY}

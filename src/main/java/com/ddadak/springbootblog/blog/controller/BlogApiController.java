@@ -8,6 +8,7 @@ import com.ddadak.springbootblog.blog.service.BlogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -20,7 +21,7 @@ public class BlogApiController {
 
     @PostMapping("/api/articles")
     // @RequestBody로 요청 본문 값 매핑
-    public ResponseEntity<Article> addArticle(@RequestBody AddArticleRequest request, Principal principal) {
+    public ResponseEntity<Article> addArticle(@RequestBody @Validated AddArticleRequest request, Principal principal) {
         Article savedArticle = blogService.save(request, principal.getName());
 
         return ResponseEntity.status(HttpStatus.CREATED)

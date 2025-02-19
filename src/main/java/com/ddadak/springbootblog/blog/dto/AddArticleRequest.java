@@ -1,6 +1,8 @@
 package com.ddadak.springbootblog.blog.dto;
 
 import com.ddadak.springbootblog.blog.domain.Article;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +12,11 @@ import lombok.NoArgsConstructor;
 @Getter
 public class AddArticleRequest {
 
+    @NotNull
+    @Size(min = 1, max = 10)
     private String title;
+
+    @NotNull
     private String content;
 
     public Article toEntity(String author) {
