@@ -4,6 +4,7 @@ import com.ddadak.springbootblog.blog.domain.Article;
 import com.ddadak.springbootblog.blog.dto.AddArticleRequest;
 import com.ddadak.springbootblog.blog.dto.UpdateArticleRequest;
 import com.ddadak.springbootblog.blog.repository.BlogRepository;
+import com.ddadak.springbootblog.config.error.exception.ArticleNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,7 +30,7 @@ public class BlogService {
     // 블로그 상세 조회
     public Article findById(Long id){
         return blogRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("not found: " + id));
+                .orElseThrow(ArticleNotFoundException::new);
     }
 
     // 블로그 글 삭제
