@@ -1,7 +1,6 @@
-package com.ddadak.springbootblog.config.error.exception;
+package com.ddadak.springbootblog.config.error;
 
-import com.ddadak.springbootblog.config.error.ErrorCode;
-import com.ddadak.springbootblog.config.error.ErrorResponse;
+import com.ddadak.springbootblog.config.error.exception.BusinessBaseException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;

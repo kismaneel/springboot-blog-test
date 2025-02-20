@@ -11,13 +11,13 @@ public class ErrorResponse {
     private String message;
 
     private ErrorResponse(final ErrorCode code) {
-        this.code = code.getCode();
         this.message = code.getMessage();
+        this.code = code.getCode();
     }
 
     public ErrorResponse(final ErrorCode code, final String message) {
-        this.code = code.getCode();
         this.message = message;
+        this.code = code.getCode();
     }
 
     public static ErrorResponse of(final ErrorCode code) {
