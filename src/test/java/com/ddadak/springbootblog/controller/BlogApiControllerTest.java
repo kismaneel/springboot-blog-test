@@ -1,9 +1,12 @@
 package com.ddadak.springbootblog.controller;
 
 import com.ddadak.springbootblog.blog.domain.Article;
+import com.ddadak.springbootblog.blog.domain.Comment;
 import com.ddadak.springbootblog.blog.dto.AddArticleRequest;
+import com.ddadak.springbootblog.blog.dto.AddCommentRequest;
 import com.ddadak.springbootblog.blog.dto.UpdateArticleRequest;
 import com.ddadak.springbootblog.blog.repository.BlogRepository;
+import com.ddadak.springbootblog.blog.repository.CommentRepository;
 import com.ddadak.springbootblog.common.user.domain.User;
 import com.ddadak.springbootblog.common.user.repository.UserRepository;
 import com.ddadak.springbootblog.config.error.ErrorCode;
@@ -52,12 +55,16 @@ class BlogApiControllerTest {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    CommentRepository commentRepository;
+
     User user;
 
     @BeforeEach
     public void mockMvpSetup(){
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context).build();
         blogRepository.deleteAll();
+        commentRepository.deleteAll();
     }
 
     @BeforeEach
@@ -277,5 +284,35 @@ class BlogApiControllerTest {
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value(ErrorCode.ARTICLE_NOT_FOUND.getMessage()))
                 .andExpect(jsonPath("$.code").value(ErrorCode.ARTICLE_NOT_FOUND.getCode()));
+    }
+
+    @DisplayName("addComment: 댓글 추가에 성공한다.")
+    @Test
+    public void addComment() throws Exception {
+        // given
+        final String url = "/api/comments";
+        Article savedArticle = createDefaultArticle();
+        final Long articleId = savedArticle.getId();
+        final String content = "content";
+        final AddCommentRequest userRequest = new AddCommentRequest(articleId, content);
+        final String requestBody = objectMapper.writeValueAsString(userRequest);
+
+        Principal principal = Mockito.mock(Principal.class);
+        Mockito.when(principal.getName()).thenReturn("username");
+
+        // when
+        ResultActions result = mockMvc.perform(post(url)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .principal(principal)
+                .content(requestBody));
+
+        // then
+        result.andExpect(status().isCreated());
+
+        List<Comment> comments = commentRepository.findAll();
+
+        assertThat(comments.size()).isEqualTo(1);
+        assertThat(comments.get(0).getArticle().getId()).isEqualTo(articleId);
+        assertThat(comments.get(0).getContent()).isEqualTo(content);
     }
 }

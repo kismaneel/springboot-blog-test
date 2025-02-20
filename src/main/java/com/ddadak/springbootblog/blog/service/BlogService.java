@@ -1,9 +1,12 @@
 package com.ddadak.springbootblog.blog.service;
 
 import com.ddadak.springbootblog.blog.domain.Article;
+import com.ddadak.springbootblog.blog.domain.Comment;
 import com.ddadak.springbootblog.blog.dto.AddArticleRequest;
+import com.ddadak.springbootblog.blog.dto.AddCommentRequest;
 import com.ddadak.springbootblog.blog.dto.UpdateArticleRequest;
 import com.ddadak.springbootblog.blog.repository.BlogRepository;
+import com.ddadak.springbootblog.blog.repository.CommentRepository;
 import com.ddadak.springbootblog.config.error.exception.ArticleNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +19,7 @@ import java.util.List;
 @Service
 public class BlogService {
     private final BlogRepository blogRepository;
+    private final CommentRepository commentRepository;
 
     // 블로그 글 추가 메소드
     public Article save(AddArticleRequest request, String userName){
@@ -62,4 +66,11 @@ public class BlogService {
         }
     }
 
+    // 댓글 추가
+    public Comment addComment(AddCommentRequest request, String userName) {
+        Article article = blogRepository.findById(request.getArticleId())
+                .orElseThrow(() -> new IllegalArgumentException("not found: " + request.getArticleId()));
+
+        return commentRepository.save(request.toEntity(userName, article));
+    }
 }

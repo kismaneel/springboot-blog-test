@@ -1,9 +1,8 @@
 package com.ddadak.springbootblog.blog.controller;
 
 import com.ddadak.springbootblog.blog.domain.Article;
-import com.ddadak.springbootblog.blog.dto.AddArticleRequest;
-import com.ddadak.springbootblog.blog.dto.ArticleResponse;
-import com.ddadak.springbootblog.blog.dto.UpdateArticleRequest;
+import com.ddadak.springbootblog.blog.domain.Comment;
+import com.ddadak.springbootblog.blog.dto.*;
 import com.ddadak.springbootblog.blog.service.BlogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -60,5 +59,13 @@ public class BlogApiController {
 
         return ResponseEntity.ok()
                 .body(updateArticle);
+    }
+
+    @PostMapping("/api/comments")
+    public ResponseEntity<AddCommentResponse> addComment(@RequestBody AddCommentRequest request, Principal principal) {
+        Comment savedComment = blogService.addComment(request, principal.getName());
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new AddCommentResponse(savedComment));
     }
 }
